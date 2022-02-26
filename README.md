@@ -58,8 +58,7 @@ function retryWrapper(fn, times = 3) {
 }
 
 (async function main() {
-    let container = document.querySelector('.FeedContainer__content')
-    let nodeList = container.querySelectorAll('a.HorizontalFeedCard__coverWrapper')
+    let nodeList = document.querySelectorAll('div.HorizontalFeedCard a.HorizontalFeedCard__coverWrapper')
 
     for (let element of nodeList) {
         let title = element.getAttribute('title')
