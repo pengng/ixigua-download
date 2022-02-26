@@ -1,19 +1,3 @@
-async function main() {
-    let container = document.querySelector('.FeedContainer__content')
-    let nodeList = container.querySelectorAll('a.HorizontalFeedCard__coverWrapper')
-
-    for (let element of nodeList) {
-        let title = element.getAttribute('title')
-        let url = location.origin + element.getAttribute('href')
-
-        let videoUrl = await retryWrapper(getVideoUrl, 5)(url)
-
-        let blob = await retryWrapper(download, 10)(title, videoUrl)
-        let link = URL.createObjectURL(blob)
-        Object.assign(document.createElement('a'), { href: link, download: `${title}.mp4` }).click()
-    }
-}
-
 async function getVideoUrl(url) {
     let iframe = document.createElement('iframe')
 
@@ -67,4 +51,18 @@ function retryWrapper(fn, times = 3) {
     }
 }
 
-main()
+(async function main() {
+    let container = document.querySelector('.FeedContainer__content')
+    let nodeList = container.querySelectorAll('a.HorizontalFeedCard__coverWrapper')
+
+    for (let element of nodeList) {
+        let title = element.getAttribute('title')
+        let url = location.origin + element.getAttribute('href')
+
+        let videoUrl = await retryWrapper(getVideoUrl, 5)(url)
+
+        let blob = await retryWrapper(download, 10)(title, videoUrl)
+        let link = URL.createObjectURL(blob)
+        Object.assign(document.createElement('a'), { href: link, download: `${title}.mp4` }).click()
+    }
+})()
