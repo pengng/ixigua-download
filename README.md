@@ -17,8 +17,6 @@ async function main() {
         let blob = await retryWrapper(download, 10)(title, videoUrl)
         let link = URL.createObjectURL(blob)
         Object.assign(document.createElement('a'), { href: link, download: `${title}.mp4` }).click()
-
-        await new Promise(resolve => setTimeout(resolve, 5000))
     }
 }
 
@@ -53,7 +51,7 @@ async function download(title, url) {
         let xhr = new XMLHttpRequest()
         xhr.open('GET', url)
         xhr.responseType = 'arraybuffer'
-        xhr.onprogress = ({ loaded, total }) => board.textContent = `文件：${title}\n进度：${(loaded / total * 100).toFixed(1)}%`
+        xhr.onprogress = ({ loaded, total }) => board.textContent = `当前任务：${title}\n进行中：${(loaded / total * 100).toFixed(1)}%`
         await new Promise((resolve, reject) => (Object.assign(xhr, { onload: resolve, onerror: reject }), xhr.send()))
 
         const { response } = xhr
