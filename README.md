@@ -12,7 +12,16 @@ async function getVideoUrl(url) {
     try {
         await new Promise((resolve, reject) => Object.assign(iframe, { onload: resolve, onerror: reject, src: url }))
 
-        let { video_list: videoList } = iframe.contentWindow._SSR_HYDRATED_DATA.anyVideo.gidInformation.packerData.video.videoResource.normal
+        //anyVideo.gidInformation.packerData.videoResource.normal.video_list
+        let videoRes;
+        if (iframe.contentWindow._SSR_HYDRATED_DATA.anyVideo.gidInformation.packerData.video) {
+            videoRes = iframe.contentWindow._SSR_HYDRATED_DATA.anyVideo.gidInformation.packerData.video.videoResource;
+        }
+        else{
+            videoRes = iframe.contentWindow._SSR_HYDRATED_DATA.anyVideo.gidInformation.packerData.videoResource;
+        }
+
+        let { video_list: videoList } = videoRes.normal
         let key = Object.keys(videoList).sort().pop()
         let { main_url: videoUrl } = videoList[key]
 
